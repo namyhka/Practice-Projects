@@ -1,3 +1,12 @@
+# My own rock paper scissors program after learning the basic of python - loops, functions, if/elif/else statements. Needs some work but works
+# Some variables I need defined before starting my program.
+
+# Rules
+# 1.) Game is your typical Rock Paper Scissors game
+# 2.) There are 3 rounds. If there is a draw, the round repeats.
+# 3.) Rock, Paper, Scissors are the only valid hands. Invalid hands will cause round to repeat
+# 4.) The program asks the player if they want to play again. If yes, game repeats. Program ends when player answers no.
+
 import random
 import time
 rock = 'Rock'
@@ -6,11 +15,13 @@ scissors = 'Scissors'
 handchoices = (rock,paper,scissors)
 playerwin = 0
 computerwin = 0
+round = 1
+game  = ()
 
 #Code below asks whether to play a game or not
 
 def startgame():
-    game = ()
+    global game
     print ('Hello. Do you want to play Rock Paper Scissors with me?')
     play = ()
     playoptions = ('Yes','No')
@@ -18,7 +29,7 @@ def startgame():
         play = input().title()
         if play == 'Yes':
             print ("That's great. Let's play three rounds")
-            game = 0
+            game = 'Active'
             gametime()
             result()
         elif play == 'No':
@@ -27,43 +38,49 @@ def startgame():
         else:
             print ('Come again?')
             play = ()
-    
-# Code below is the logic of the game
 
 def gamelogic(playerhand,computerhand):
     global playerwin
     global computerwin
+    global round
     #rock options
-    if playerhand == 'Rock' and computerhand == 'Rock':
-        print ('Draw. Please try again.')
+    if playerhand == computerhand:
+        print ('Draw. Please try again. Repeat round ' + str(round))
     elif playerhand == 'Rock' and computerhand == 'Paper':
         print ('Player loses. Paper beats rock')
         computerwin += 1
+        round += 1
     elif playerhand == 'Rock' and computerhand == 'Scissors':
         print ('Player wins this round. Rocks beats scissors')
         playerwin += 1
+        round += 1
     # paper options
-    elif playerhand == 'Paper' and computerhand == 'Paper':
-        print ('Draw. Please try again.')
     elif playerhand == 'Paper' and computerhand == 'Scissors':
         print ('Player loses. Scissors cuts up paper')
         computerwin += 1
+        round += 1
     elif playerhand == 'Paper' and computerhand == 'Rock':
         print ('Player wins this round. Paper eats up rock.')
         playerwin += 1
+        round += 1
     # scissor options
-    elif playerhand == 'Scissors' and computerhand == 'Scissors':
-        print ('Draw. Please try again')
     elif playerhand == 'Scissors' and computerhand =='Rock':
         print ('Player loses. Rock beats scissors')
         computerwin += 1
+        round += 1
     elif playerhand == 'Scissors' and computerhand == 'Paper':
         print ('Player wins this round. Scissors cuts up paper')
         playerwin += 1
+        round += 1
     else:
-        print ('Error')
+        print ('Invalid hand. Please try again.')
+        roundaction()
 
-#Code below is main game.
+def gametime():
+    while round != 4:
+        print ('Round ' +str(round))
+        roundaction()
+
 def roundaction():
     playerhand = ()
     print ('Which hand do you want to go this round?')
@@ -74,11 +91,6 @@ def roundaction():
     computerhand = random.choice(handchoices)
     print ('Computer chooeses ' + str(computerhand))
     gamelogic(playerhand,computerhand)
-
-def gametime():
-    for round in range(1,4):
-        print ('Round ' +str(round))
-        roundaction()
 
 def result():
     print ("Okay that's 3 rounds total. Player won " + str(playerwin), 'rounds while Computer won ' + str(computerwin))
@@ -93,16 +105,17 @@ def result():
         playagain()
 
 def playagain():
-    print ('Do you want to play again')
-    playagain = ()
-    playagain = input().title()
-    if playagain == 'Yes':
-        gametime()
-    else:
-        print ('Thank you for playing!')
+    global round
+    while game == 'Active':
+        print ('Do you want to play again')
+        playagain = ()
+        playagain = input().title()
+        if playagain == 'Yes':
+            round = 1
+            print (round)
+            gametime()      
+        else:
+            print ('Thank you for playing!')
+            break
 
 startgame()
-
-
-    
-    
